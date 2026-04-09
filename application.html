@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Lottery Retailer Application - State Lottery Commission Portal">
+  <title>New Application - State Lottery Commission Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Application Form Specific Styles */
+    .application-page {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #F9FAFB 0%, #E5E7EB 100%);
+      padding: 2rem 0;
+    }
+
+    .application-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .application-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .application-header h1 {
+      font-size: 2.25rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      font-weight: 800;
+    }
+
+    .application-header p {
+      color: var(--text-light);
+      font-size: 1.05rem;
+    }
+
+    /* Progress Indicator */
+    .progress-container {
+      background: white;
+      padding: 2rem;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+    }
+
+    .progress-steps {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      margin-bottom: 1rem;
+    }
+
+    .progress-line {
+      position: absolute;
+      top: 20px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--border-light);
+      z-index: 1;
+    }
+
+    .progress-line-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-light));
+      transition: width var(--transition-slow);
+      z-index: 2;
+    }
+
+    .progress-step {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+    }
+
+    .step-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--border-light);
+      border: 3px solid white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--text-lighter);
+      font-size: 0.875rem;
+      margin-bottom: 0.5rem;
+      transition: all var(--transition-normal);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .progress-step.active .step-circle {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: var(--primary);
+      transform: scale(1.15);
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+    }
+
+    .progress-step.completed .step-circle {
+      background: var(--success);
+      color: white;
+    }
+
+    .progress-step.completed .step-circle::after {
+      content: '✓';
+      font-size: 1rem;
+    }
+
+    .step-label {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      text-align: center;
+      font-weight: 500;
+      max-width: 100px;
+    }
+
+    .progress-step.active .step-label {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* Form Card */
+    .form-card {
+      background: white;
+      padding: 2.5rem;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-xl);
+      border: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
+
+    .stage-header {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid var(--border-light);
+    }
+
+    .stage-title {
+      font-size: 1.75rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .stage-description {
+      color: var(--text-light);
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .form-section {
+      margin-bottom: 2rem;
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .question-group {
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: var(--background);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-light);
+    }
+
+    .question-label {
+      display: block;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+    }
+
+    .radio-option input[type="radio"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: var(--accent);
+    }
+
+    .radio-option label {
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .form-label .required {
+      color: var(--error);
+      margin-left: 0.25rem;
+    }
+
+    .form-input,
+    .form-textarea,
+    .form-select {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      font-size: 1rem;
+      transition: all var(--transition-fast);
+      background: white;
+      color: var(--text);
+    }
+
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+    }
+
+    .form-textarea {
+      min-height: 100px;
+      resize: vertical;
+      font-family: inherit;
+    }
+
+    .form-help {
+      font-size: 0.875rem;
+      color: var(--text-light);
+      margin-top: 0.5rem;
+    }
+
+    .file-upload-area {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all var(--transition-normal);
+      background: var(--background);
+      margin-bottom: 1.5rem;
+    }
+
+    .file-upload-area:hover {
+      border-color: var(--accent);
+      background: rgba(212, 175, 55, 0.05);
+    }
+
+    .file-upload-area.drag-over {
+      border-color: var(--accent);
+      background: rgba(212, 175, 55, 0.1);
+    }
+
+    .file-upload-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .file-upload-text {
+      color: var(--text);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .file-upload-hint {
+      color: var(--text-light);
+      font-size: 0.875rem;
+    }
+
+    .uploaded-files {
+      margin-top: 1.5rem;
+    }
+
+    .uploaded-file-item {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: all var(--transition-fast);
+    }
+
+    .uploaded-file-item:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .file-icon {
+      font-size: 2rem;
+      color: var(--accent);
+    }
+
+    .file-info {
+      flex: 1;
+    }
+
+    .file-name {
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+      word-break: break-word;
+    }
+
+    .file-size {
+      font-size: 0.875rem;
+      color: var(--text-light);
+    }
+
+    .file-success {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--success);
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    .file-remove {
+      background: var(--error);
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .file-remove:hover {
+      background: #DC2626;
+      transform: scale(1.05);
+    }
+
+    .upload-summary {
+      background: var(--success-light);
+      border: 1px solid var(--success);
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .upload-summary-icon {
+      font-size: 1.5rem;
+      color: var(--success);
+    }
+
+    .upload-summary-text {
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    /* Review Section */
+    .review-card {
+      background: var(--background);
+      padding: 1.5rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+
+    .review-section-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .review-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .review-item:last-child {
+      border-bottom: none;
+    }
+
+    .review-label {
+      font-weight: 600;
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+
+    .review-value {
+      color: var(--text);
+      font-weight: 500;
+      text-align: right;
+    }
+
+    .edit-button {
+      color: var(--accent);
+      font-size: 0.875rem;
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .edit-button:hover {
+      color: var(--accent-dark);
+      text-decoration: underline;
+    }
+
+    /* Form Navigation */
+    .form-navigation {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .btn {
+      padding: 0.875rem 2rem;
+      border-radius: var(--radius-lg);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all var(--transition-normal);
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: var(--primary);
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--primary);
+      border: 2px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--background);
+      border-color: var(--primary);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* Hidden stages */
+    .stage {
+      display: none;
+    }
+
+    .stage.active {
+      display: block;
+    }
+
+    /* Success Message */
+    .success-message {
+      display: none;
+      text-align: center;
+      padding: 3rem;
+    }
+
+    .success-icon {
+      font-size: 4rem;
+      color: var(--success);
+      margin-bottom: 1rem;
+    }
+
+    .success-title {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .success-text {
+      color: var(--text-light);
+      font-size: 1.125rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .radio-group {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .progress-steps {
+        flex-wrap: wrap;
+      }
+
+      .step-label {
+        font-size: 0.65rem;
+      }
+
+      .form-navigation {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="application-page">
+    <div class="application-container">
+      <!-- Back to Dashboard -->
+      <a href="dashboard.html" class="back-link" style="display: inline-flex; align-items: center; gap: 0.5rem; color: var(--primary); text-decoration: none; margin-bottom: 2rem; font-weight: 600;">
+        ← Back to Dashboard
+      </a>
+
+      <!-- Header -->
+      <div class="application-header">
+        <h1>Lottery Retailer License Application</h1>
+        <p>Complete all required information to submit your application for review</p>
+      </div>
+
+      <!-- Progress Indicator -->
+      <div class="progress-container">
+        <div class="progress-steps">
+          <div class="progress-line">
+            <div class="progress-line-fill" id="progressFill"></div>
+          </div>
+          <div class="progress-step active" data-stage="1">
+            <div class="step-circle">1</div>
+            <span class="step-label">Personal & Entity Criteria</span>
+          </div>
+          <div class="progress-step" data-stage="2">
+            <div class="step-circle">2</div>
+            <span class="step-label">Location Criteria</span>
+          </div>
+          <div class="progress-step" data-stage="3">
+            <div class="step-circle">3</div>
+            <span class="step-label">Entity & Location Info</span>
+          </div>
+          <div class="progress-step" data-stage="4">
+            <div class="step-circle">4</div>
+            <span class="step-label">Documents</span>
+          </div>
+          <div class="progress-step" data-stage="5">
+            <div class="step-circle">5</div>
+            <span class="step-label">Review & Submit</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Application Form -->
+      <div class="form-card">
+        <form id="applicationForm">
+          
+          <!-- Stage 1: Personal and Entity Criteria Questions -->
+          <div class="stage active" id="stage1">
+            <div class="stage-header">
+              <h2 class="stage-title">
+                <span>📋</span> Stage 1: Personal and Entity Criteria
+              </h2>
+              <p class="stage-description">
+                Please answer the following questions regarding tax compliance and entity registration. All questions are required.
+              </p>
+            </div>
+
+            <div class="form-section">
+              <div class="question-group">
+                <label class="question-label">
+                  a. Are you in tax compliance with the IRS and State Department of Revenue? <span class="required">*</span>
+                </label>
+                <div class="radio-group">
+                  <div class="radio-option">
+                    <input type="radio" id="q1a_yes" name="personalTaxCompliance" value="yes" required>
+                    <label for="q1a_yes">Yes</label>
+                  </div>
+                  <div class="radio-option">
+                    <input type="radio" id="q1a_no" name="personalTaxCompliance" value="no">
+                    <label for="q1a_no">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="question-group">
+                <label class="question-label">
+                  b. Is the applying entity in tax compliance with the IRS and State Department of Revenue? <span class="required">*</span>
+                </label>
+                <div class="radio-group">
+                  <div class="radio-option">
+                    <input type="radio" id="q1b_yes" name="entityTaxCompliance" value="yes" required>
+                    <label for="q1b_yes">Yes</label>
+                  </div>
+                  <div class="radio-option">
+                    <input type="radio" id="q1b_no" name="entityTaxCompliance" value="no">
+                    <label for="q1b_no">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="question-group">
+                <label class="question-label">
+                  c. Do you have 5 or more locations under the same ownership? <span class="required">*</span>
+                </label>
+                <div class="radio-group">
+                  <div class="radio-option">
+                    <input type="radio" id="q1c_yes" name="multipleLocations" value="yes" required>
+                    <label for="q1c_yes">Yes</label>
+                  </div>
+                  <div class="radio-option">
+                    <input type="radio" id="q1c_no" name="multipleLocations" value="no">
+                    <label for="q1c_no">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="question-group">
+                <label class="question-label">
+                  d. Is your entity registered with your State's Secretary of State or Corporation Division? <span class="required">*</span>
+                </label>
+                <div class="radio-group">
+                  <div class="radio-option">
+                    <input type="radio" id="q1d_yes" name="entityRegistered" value="yes" required>
+                    <label for="q1d_yes">Yes</label>
+                  </div>
+                  <div class="radio-option">
+                    <input type="radio" id="q1d_no" name="entityRegistered" value="no">
+                    <label for="q1d_no">No</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-navigation">
+              <button type="button" class="btn btn-secondary" disabled>Previous</button>
+              <button type="button" class="btn btn-primary" onclick="nextStage(2)">
+                Next: Location Criteria →
+              </button>
+            </div>
+          </div>
+
+          <!-- Stage 2: Location Criteria Questions -->
+          <div class="stage" id="stage2">
+            <div class="stage-header">
+              <h2 class="stage-title">
+                <span>🏪</span> Stage 2: Location Criteria
+              </h2>
+              <p class="stage-description">
+                Please provide information about your business location and operations. All questions are required.
+              </p>
+            </div>
+
+            <div class="form-section">
+              <div class="question-group">
+                <label class="question-label">
+                  a. What type of business do you have? <span class="required">*</span>
+                </label>
+                <div class="form-group">
+                  <select class="form-select" name="businessType" required>
+                    <option value="">Select business type...</option>
+                    <option value="convenience_store">Convenience Store</option>
+                    <option value="gas_station">Gas Station</option>
+                    <option value="grocery_store">Grocery Store</option>
+                    <option value="liquor_store">Liquor Store</option>
+                    <option value="pharmacy">Pharmacy</option>
+                    <option value="restaurant">Restaurant/Bar</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="question-group">
+                <label class="question-label">
+                  b. Is your assumed Business Name registered to the correct "registrant" with your State's Secretary of State or Corporation Division? <span class="required">*</span>
+                </label>
+                <div class="radio-group">
+                  <div class="radio-option">
+                    <input type="radio" id="q2b_yes" name="businessNameRegistered" value="yes" required>
+                    <label for="q2b_yes">Yes</label>
+                  </div>
+                  <div class="radio-option">
+                    <input type="radio" id="q2b_no" name="businessNameRegistered" value="no">
+                    <label for="q2b_no">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="question-group">
+                <label class="question-label">
+                  c. Do you have an on-premise liquor license from your state liquor authority? <span class="required">*</span>
+                </label>
+                <div class="radio-group">
+                  <div class="radio-option">
+                    <input type="radio" id="q2c_yes" name="liquorLicense" value="yes" required>
+                    <label for="q2c_yes">Yes</label>
+                  </div>
+                  <div class="radio-option">
+                    <input type="radio" id="q2c_no" name="liquorLicense" value="no">
+                    <label for="q2c_no">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="question-group">
+                <label class="question-label">
+                  d. Is your business open and operating? <span class="required">*</span>
+                </label>
+                <div class="radio-group">
+                  <div class="radio-option">
+                    <input type="radio" id="q2d_yes" name="businessOperating" value="yes" required>
+                    <label for="q2d_yes">Yes</label>
+                  </div>
+                  <div class="radio-option">
+                    <input type="radio" id="q2d_no" name="businessOperating" value="no">
+                    <label for="q2d_no">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="question-group">
+                <label class="question-label">
+                  e. Has your business been open and operating with an on-premise liquor license for the last 9 months? <span class="required">*</span>
+                </label>
+                <div class="radio-group">
+                  <div class="radio-option">
+                    <input type="radio" id="q2e_yes" name="businessOperatingDuration" value="yes" required>
+                    <label for="q2e_yes">Yes</label>
+                  </div>
+                  <div class="radio-option">
+                    <input type="radio" id="q2e_no" name="businessOperatingDuration" value="no">
+                    <label for="q2e_no">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="question-group">
+                <label class="question-label">
+                  f. Do any of the owners have any immediate family members involved in the business in any capacity (paid or unpaid)? <span class="required">*</span>
+                </label>
+                <div class="radio-group">
+                  <div class="radio-option">
+                    <input type="radio" id="q2f_yes" name="familyInvolvement" value="yes" required>
+                    <label for="q2f_yes">Yes</label>
+                  </div>
+                  <div class="radio-option">
+                    <input type="radio" id="q2f_no" name="familyInvolvement" value="no">
+                    <label for="q2f_no">No</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-navigation">
+              <button type="button" class="btn btn-secondary" onclick="prevStage(1)">
+                ← Previous
+              </button>
+              <button type="button" class="btn btn-primary" onclick="nextStage(3)">
+                Next: Entity Information →
+              </button>
+            </div>
+          </div>
+
+          <!-- Stage 3: Entity and Location Information -->
+          <div class="stage" id="stage3">
+            <div class="stage-header">
+              <h2 class="stage-title">
+                <span>📝</span> Stage 3: Entity and Location Information
+              </h2>
+              <p class="stage-description">
+                Please provide your detailed entity and location information. All fields are required.
+              </p>
+            </div>
+
+            <div class="form-section">
+              <div class="form-group">
+                <label class="form-label" for="legalEntityName">
+                  a. Enter your legal entity name that is registered with your State's Secretary of State or Corporation Division <span class="required">*</span>
+                </label>
+                <input 
+                  type="text" 
+                  class="form-input" 
+                  id="legalEntityName" 
+                  name="legalEntityName" 
+                  placeholder="Enter legal entity name" 
+                  required
+                >
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="entityRegistryNumber">
+                  b. Please enter your entity registry number that is registered with your State's Secretary of State or Corporation Division <span class="required">*</span>
+                </label>
+                <input 
+                  type="text" 
+                  class="form-input" 
+                  id="entityRegistryNumber" 
+                  name="entityRegistryNumber" 
+                  placeholder="Enter registry number" 
+                  required
+                >
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="businessIdentificationNumber">
+                  c. Please enter your Business Identification Number (BIN) <span class="required">*</span>
+                </label>
+                <input 
+                  type="text" 
+                  class="form-input" 
+                  id="businessIdentificationNumber" 
+                  name="businessIdentificationNumber" 
+                  placeholder="Enter BIN" 
+                  required
+                >
+                <p class="form-help">Your 9-digit Business Identification Number</p>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="taxIdentificationNumber">
+                  d. What type of tax identification number do you have? <span class="required">*</span>
+                </label>
+                <select class="form-select" id="taxIdentificationNumber" name="taxIdentificationNumber" required>
+                  <option value="">Select tax ID type...</option>
+                  <option value="ein">EIN (Employer Identification Number)</option>
+                  <option value="ssn">SSN (Social Security Number)</option>
+                  <option value="itin">ITIN (Individual Taxpayer Identification Number)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="additionalNotes">
+                  e. Please add any additional notes you would like to send to our team for consideration <span class="required">*</span>
+                </label>
+                <textarea 
+                  class="form-textarea" 
+                  id="additionalNotes" 
+                  name="additionalNotes" 
+                  placeholder="Enter any additional information or context..."
+                  required
+                ></textarea>
+                <p class="form-help">Provide any relevant details that may help us process your application</p>
+              </div>
+            </div>
+
+            <div class="form-navigation">
+              <button type="button" class="btn btn-secondary" onclick="prevStage(2)">
+                ← Previous
+              </button>
+              <button type="button" class="btn btn-primary" onclick="nextStage(4)">
+                Next: Upload Documents →
+              </button>
+            </div>
+          </div>
+
+          <!-- Stage 4: Document Upload -->
+          <div class="stage" id="stage4">
+            <div class="stage-header">
+              <h2 class="stage-title">
+                <span>📄</span> Stage 4: Supporting Documents
+              </h2>
+              <p class="stage-description">
+                Please upload any supporting documents for your application. Accepted formats: PDF, JPG, PNG (Max 10MB per file)
+              </p>
+            </div>
+
+            <div class="form-section">
+              <!-- File Upload Area -->
+              <div class="file-upload-area" id="fileUploadArea" onclick="document.getElementById('fileInput').click()">
+                <div class="file-upload-icon">📁</div>
+                <div class="file-upload-text">Click to upload or drag and drop</div>
+                <div class="file-upload-hint">PDF, JPG, PNG up to 10MB</div>
+                <input type="file" id="fileInput" style="display: none;" multiple accept=".pdf,.jpg,.jpeg,.png" onchange="handleFileSelect(event)">
+              </div>
+
+              <!-- Uploaded Files List -->
+              <div class="uploaded-files" id="uploadedFilesList"></div>
+
+              <!-- Upload Summary -->
+              <div class="upload-summary" id="uploadSummary" style="display: none;">
+                <span class="upload-summary-icon">✓</span>
+                <span class="upload-summary-text" id="uploadSummaryText">0 documents uploaded successfully</span>
+              </div>
+            </div>
+
+            <div class="form-navigation">
+              <button type="button" class="btn btn-secondary" onclick="prevStage(3)">
+                ← Previous
+              </button>
+              <button type="button" class="btn btn-primary" onclick="nextStage(5)">
+                Review Application →
+              </button>
+            </div>
+          </div>
+
+          <!-- Stage 5: Review and Submit -->
+          <div class="stage" id="stage5">
+            <div class="stage-header">
+              <h2 class="stage-title">
+                <span>✅</span> Stage 5: Review and Submit
+              </h2>
+              <p class="stage-description">
+                Please review all your information before submitting. You can go back to edit any section if needed.
+              </p>
+            </div>
+
+            <!-- Review Section 1 -->
+            <div class="review-card">
+              <div class="review-section-title">
+                <span>📋</span> Personal and Entity Criteria
+                <a href="javascript:void(0)" onclick="prevStage(1)" class="edit-button" style="margin-left: auto;">Edit</a>
+              </div>
+              <div class="review-item">
+                <span class="review-label">Personal Tax Compliance:</span>
+                <span class="review-value" id="review_personalTaxCompliance">-</span>
+              </div>
+              <div class="review-item">
+                <span class="review-label">Entity Tax Compliance:</span>
+                <span class="review-value" id="review_entityTaxCompliance">-</span>
+              </div>
+              <div class="review-item">
+                <span class="review-label">Multiple Locations (5+):</span>
+                <span class="review-value" id="review_multipleLocations">-</span>
+              </div>
+              <div class="review-item">
+                <span class="review-label">Entity Registered:</span>
+                <span class="review-value" id="review_entityRegistered">-</span>
+              </div>
+            </div>
+
+            <!-- Review Section 2 -->
+            <div class="review-card">
+              <div class="review-section-title">
+                <span>🏪</span> Location Criteria
+                <a href="javascript:void(0)" onclick="prevStage(2)" class="edit-button" style="margin-left: auto;">Edit</a>
+              </div>
+              <div class="review-item">
+                <span class="review-label">Business Type:</span>
+                <span class="review-value" id="review_businessType">-</span>
+              </div>
+              <div class="review-item">
+                <span class="review-label">Business Name Registered:</span>
+                <span class="review-value" id="review_businessNameRegistered">-</span>
+              </div>
+              <div class="review-item">
+                <span class="review-label">Liquor License:</span>
+                <span class="review-value" id="review_liquorLicense">-</span>
+              </div>
+              <div class="review-item">
+                <span class="review-label">Business Operating:</span>
+                <span class="review-value" id="review_businessOperating">-</span>
+              </div>
+              <div class="review-item">
+                <span class="review-label">Operating Duration (9+ months):</span>
+                <span class="review-value" id="review_businessOperatingDuration">-</span>
+              </div>
+              <div class="review-item">
+                <span class="review-label">Family Involvement:</span>
+                <span class="review-value" id="review_familyInvolvement">-</span>
+              </div>
+            </div>
+
+            <!-- Review Section 3 -->
+            <div class="review-card">
+              <div class="review-section-title">
+                <span>📝</span> Entity and Location Information
+                <a href="javascript:void(0)" onclick="prevStage(3)" class="edit-button" style="margin-left: auto;">Edit</a>
+              </div>
+              <div class="review-item">
+                <span class="review-label">Legal Entity Name:</span>
+                <span class="review-value" id="review_legalEntityName">-</span>
+              </div>
+              <div class="review-item">
+                <span class="review-label">Entity Registry Number:</span>
+                <span class="review-value" id="review_entityRegistryNumber">-</span>
+              </div>
+              <div class="review-item">
+                <span class="review-label">Business Identification Number:</span>
+                <span class="review-value" id="review_businessIdentificationNumber">-</span>
+              </div>
+              <div class="review-item">
+                <span class="review-label">Tax ID Type:</span>
+                <span class="review-value" id="review_taxIdentificationNumber">-</span>
+              </div>
+              <div class="review-item">
+                <span class="review-label">Additional Notes:</span>
+                <span class="review-value" id="review_additionalNotes">-</span>
+              </div>
+            </div>
+
+            <!-- Review Section 4 -->
+            <div class="review-card">
+              <div class="review-section-title">
+                <span>📄</span> Supporting Documents
+                <a href="javascript:void(0)" onclick="prevStage(4)" class="edit-button" style="margin-left: auto;">Edit</a>
+              </div>
+              <div id="review_documents">
+                <!-- Documents will be populated here -->
+              </div>
+            </div>
+
+            <div class="form-navigation">
+              <button type="button" class="btn btn-secondary" onclick="prevStage(4)">
+                ← Previous
+              </button>
+              <button type="submit" class="btn btn-primary">
+                Submit Application ✓
+              </button>
+            </div>
+          </div>
+
+        </form>
+
+        <!-- Success Message (Hidden initially) -->
+        <div class="success-message" id="successMessage">
+          <div class="success-icon">✓</div>
+          <h2 class="success-title">Application Submitted Successfully!</h2>
+          <p class="success-text">
+            Your lottery retailer license application has been received. Our team will review your application and contact you within 3-5 business days.
+          </p>
+          <button class="btn btn-primary" onclick="window.location.href='dashboard.html'">
+            Return to Dashboard
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Current stage tracking
+    let currentStage = 1;
+    const totalStages = 5;
+    
+    // Store uploaded files
+    let uploadedFiles = [];
+
+    // Update progress indicator
+    function updateProgress() {
+      const progressFill = document.getElementById('progressFill');
+      const progressSteps = document.querySelectorAll('.progress-step');
+      
+      // Calculate progress percentage
+      const progressPercentage = ((currentStage - 1) / (totalStages - 1)) * 100;
+      progressFill.style.width = progressPercentage + '%';
+
+      // Update step states
+      progressSteps.forEach((step, index) => {
+        const stageNum = index + 1;
+        step.classList.remove('active', 'completed');
+        
+        if (stageNum < currentStage) {
+          step.classList.add('completed');
+          step.querySelector('.step-circle').textContent = '';
+        } else if (stageNum === currentStage) {
+          step.classList.add('active');
+          step.querySelector('.step-circle').textContent = stageNum;
+        } else {
+          step.querySelector('.step-circle').textContent = stageNum;
+        }
+      });
+    }
+
+    // Validate current stage
+    function validateStage(stageNum) {
+      const stage = document.getElementById('stage' + stageNum);
+      const inputs = stage.querySelectorAll('input[required], select[required], textarea[required]');
+      
+      for (let input of inputs) {
+        if (input.type === 'radio') {
+          const radioGroup = stage.querySelectorAll(`input[name="${input.name}"]`);
+          const isChecked = Array.from(radioGroup).some(radio => radio.checked);
+          if (!isChecked) {
+            alert(`Please answer all required questions in this section.`);
+            return false;
+          }
+        } else if (!input.value.trim()) {
+          alert(`Please complete all required fields in this section.`);
+          input.focus();
+          return false;
+        }
+      }
+      return true;
+    }
+
+    // Navigate to next stage
+    function nextStage(nextStageNum) {
+      if (!validateStage(currentStage)) {
+        return;
+      }
+
+      // Hide current stage
+      document.getElementById('stage' + currentStage).classList.remove('active');
+      
+      // Show next stage
+      currentStage = nextStageNum;
+      document.getElementById('stage' + currentStage).classList.add('active');
+      
+      // Update progress
+      updateProgress();
+
+      // Update review if going to stage 5 (Review & Submit)
+      if (currentStage === 5) {
+        updateReviewSection();
+      }
+
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Navigate to previous stage
+    function prevStage(prevStageNum) {
+      // Hide current stage
+      document.getElementById('stage' + currentStage).classList.remove('active');
+      
+      // Show previous stage
+      currentStage = prevStageNum;
+      document.getElementById('stage' + currentStage).classList.add('active');
+      
+      // Update progress
+      updateProgress();
+
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // File upload handlers
+    function handleFileSelect(event) {
+      const files = event.target.files;
+      if (files.length > 0) {
+        addFiles(files);
+      }
+    }
+
+    function addFiles(files) {
+      for (let file of files) {
+        // Check file size (10MB max)
+        if (file.size > 10 * 1024 * 1024) {
+          alert(`File "${file.name}" is too large. Maximum size is 10MB.`);
+          continue;
+        }
+
+        // Check file type
+        const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
+        if (!allowedTypes.includes(file.type)) {
+          alert(`File "${file.name}" is not an allowed type. Please upload PDF, JPG, or PNG files.`);
+          continue;
+        }
+
+        // Add file to array with unique ID
+        const fileObj = {
+          id: Date.now() + Math.random(),
+          file: file,
+          name: file.name,
+          size: formatFileSize(file.size),
+          type: file.type
+        };
+        
+        uploadedFiles.push(fileObj);
+      }
+      
+      renderUploadedFiles();
+      updateUploadSummary();
+    }
+
+    function formatFileSize(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+    }
+
+    function renderUploadedFiles() {
+      const container = document.getElementById('uploadedFilesList');
+      
+      if (uploadedFiles.length === 0) {
+        container.innerHTML = '';
+        return;
+      }
+
+      container.innerHTML = uploadedFiles.map(fileObj => `
+        <div class="uploaded-file-item">
+          <div class="file-icon">📄</div>
+          <div class="file-info">
+            <div class="file-name">${fileObj.name}</div>
+            <div class="file-size">${fileObj.size}</div>
+          </div>
+          <div class="file-success">
+            <span>✓</span>
+            <span>Uploaded</span>
+          </div>
+          <button class="file-remove" onclick="removeFile('${fileObj.id}')">
+            Remove
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function removeFile(fileId) {
+      uploadedFiles = uploadedFiles.filter(f => f.id !== parseFloat(fileId));
+      renderUploadedFiles();
+      updateUploadSummary();
+    }
+
+    function updateUploadSummary() {
+      const summary = document.getElementById('uploadSummary');
+      const summaryText = document.getElementById('uploadSummaryText');
+      
+      if (uploadedFiles.length > 0) {
+        summary.style.display = 'flex';
+        summaryText.textContent = `${uploadedFiles.length} document${uploadedFiles.length !== 1 ? 's' : ''} uploaded successfully`;
+      } else {
+        summary.style.display = 'none';
+      }
+    }
+
+    // Drag and drop handlers
+    const fileUploadArea = document.getElementById('fileUploadArea');
+    
+    fileUploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      fileUploadArea.classList.add('drag-over');
+    });
+
+    fileUploadArea.addEventListener('dragleave', () => {
+      fileUploadArea.classList.remove('drag-over');
+    });
+
+    fileUploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      fileUploadArea.classList.remove('drag-over');
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        addFiles(files);
+      }
+    });
+
+    // Update review section with form data
+    function updateReviewSection() {
+      const form = document.getElementById('applicationForm');
+      const formData = new FormData(form);
+
+      // Helper to format Yes/No
+      const formatYesNo = (value) => value === 'yes' ? 'Yes' : 'No';
+
+      // Helper to format select options
+      const formatSelect = (name) => {
+        const select = form.querySelector(`[name="${name}"]`);
+        return select.options[select.selectedIndex].text;
+      };
+
+      // Update review values
+      document.getElementById('review_personalTaxCompliance').textContent = formatYesNo(formData.get('personalTaxCompliance'));
+      document.getElementById('review_entityTaxCompliance').textContent = formatYesNo(formData.get('entityTaxCompliance'));
+      document.getElementById('review_multipleLocations').textContent = formatYesNo(formData.get('multipleLocations'));
+      document.getElementById('review_entityRegistered').textContent = formatYesNo(formData.get('entityRegistered'));
+      
+      document.getElementById('review_businessType').textContent = formatSelect('businessType');
+      document.getElementById('review_businessNameRegistered').textContent = formatYesNo(formData.get('businessNameRegistered'));
+      document.getElementById('review_liquorLicense').textContent = formatYesNo(formData.get('liquorLicense'));
+      document.getElementById('review_businessOperating').textContent = formatYesNo(formData.get('businessOperating'));
+      document.getElementById('review_businessOperatingDuration').textContent = formatYesNo(formData.get('businessOperatingDuration'));
+      document.getElementById('review_familyInvolvement').textContent = formatYesNo(formData.get('familyInvolvement'));
+      
+      document.getElementById('review_legalEntityName').textContent = formData.get('legalEntityName') || '-';
+      document.getElementById('review_entityRegistryNumber').textContent = formData.get('entityRegistryNumber') || '-';
+      document.getElementById('review_businessIdentificationNumber').textContent = formData.get('businessIdentificationNumber') || '-';
+      document.getElementById('review_taxIdentificationNumber').textContent = formatSelect('taxIdentificationNumber');
+      document.getElementById('review_additionalNotes').textContent = formData.get('additionalNotes') || '-';
+      
+      // Update documents review
+      const reviewDocuments = document.getElementById('review_documents');
+      if (uploadedFiles.length === 0) {
+        reviewDocuments.innerHTML = `
+          <div class="review-item">
+            <span class="review-label">Documents Uploaded:</span>
+            <span class="review-value">No documents uploaded</span>
+          </div>
+        `;
+      } else {
+        reviewDocuments.innerHTML = `
+          <div class="review-item">
+            <span class="review-label">Documents Uploaded:</span>
+            <span class="review-value">${uploadedFiles.length} document${uploadedFiles.length !== 1 ? 's' : ''}</span>
+          </div>
+          ${uploadedFiles.map(fileObj => `
+            <div class="review-item">
+              <span class="review-label">📄 ${fileObj.name}</span>
+              <span class="review-value">${fileObj.size}</span>
+            </div>
+          `).join('')}
+        `;
+      }
+    }
+
+    // Handle form submission
+    document.getElementById('applicationForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Hide form
+      document.getElementById('applicationForm').style.display = 'none';
+      
+      // Show success message
+      document.getElementById('successMessage').style.display = 'block';
+      
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Initialize progress on page load
+    updateProgress();
+  </script>
+</body>
+</html>

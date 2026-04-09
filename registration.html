@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Register for the State Lottery Commission Portal">
+  <title>Registration - State Lottery Commission Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Skip to main content for accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Registration Page -->
+  <div class="auth-page">
+    <div class="auth-card card">
+      <div class="card-header text-center">
+        <img src="assets/sba-logo.svg" alt="State Lottery Commission Logo" style="height: 60px; margin-bottom: 1rem;">
+        <h1 class="card-title">Create Your Account</h1>
+        <p class="card-subtitle">Join the State Lottery Commission portal to manage your lottery retail applications</p>
+      </div>
+
+      <div class="card-body" id="main-content">
+        <!-- Registration Form -->
+        <form id="registrationForm" novalidate>
+          
+          <!-- Full Name -->
+          <div class="form-group">
+            <label for="fullName" class="form-label form-label-required">Full Name</label>
+            <input 
+              type="text" 
+              id="fullName" 
+              name="fullName" 
+              class="form-input" 
+              placeholder="Enter your full name"
+              aria-required="true"
+              aria-describedby="fullNameError"
+              required
+            >
+            <span id="fullNameError" class="form-error hidden" role="alert">
+              ⚠️ Please enter your full name
+            </span>
+          </div>
+
+          <!-- Email Address -->
+          <div class="form-group">
+            <label for="email" class="form-label form-label-required">Email Address</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              class="form-input" 
+              placeholder="you@example.com"
+              aria-required="true"
+              aria-describedby="emailError"
+              required
+            >
+            <span id="emailError" class="form-error hidden" role="alert"></span>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group">
+            <label for="password" class="form-label form-label-required">Password</label>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              class="form-input" 
+              placeholder="Minimum 8 characters"
+              aria-required="true"
+              aria-describedby="passwordError passwordStrengthLabel"
+              required
+            >
+            <!-- Password Strength Indicator -->
+            <div class="password-strength" aria-hidden="true">
+              <div class="password-strength-bar" id="strengthBar1"></div>
+              <div class="password-strength-bar" id="strengthBar2"></div>
+              <div class="password-strength-bar" id="strengthBar3"></div>
+              <div class="password-strength-bar" id="strengthBar4"></div>
+            </div>
+            <span id="passwordStrengthLabel" class="password-strength-label"></span>
+            <span id="passwordError" class="form-error hidden" role="alert"></span>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="form-group">
+            <label for="confirmPassword" class="form-label form-label-required">Confirm Password</label>
+            <input 
+              type="password" 
+              id="confirmPassword" 
+              name="confirmPassword" 
+              class="form-input" 
+              placeholder="Re-enter your password"
+              aria-required="true"
+              aria-describedby="confirmPasswordError"
+              required
+            >
+            <span id="confirmPasswordError" class="form-error hidden" role="alert"></span>
+          </div>
+
+          <!-- Contact Number -->
+          <div class="form-group">
+            <label for="phone" class="form-label form-label-required">Contact Number</label>
+            <input 
+              type="tel" 
+              id="phone" 
+              name="phone" 
+              class="form-input" 
+              placeholder="(555) 123-4567"
+              aria-required="true"
+              aria-describedby="phoneError"
+              required
+            >
+            <span class="form-help">Format: (XXX) XXX-XXXX</span>
+            <span id="phoneError" class="form-error hidden" role="alert"></span>
+          </div>
+
+          <!-- Address -->
+          <div class="form-group">
+            <label for="address" class="form-label form-label-required">Address</label>
+            <textarea 
+              id="address" 
+              name="address" 
+              class="form-textarea" 
+              placeholder="Enter your full address"
+              aria-required="true"
+              aria-describedby="addressError"
+              rows="3"
+              required
+            ></textarea>
+            <span id="addressError" class="form-error hidden" role="alert">
+              ⚠️ Please enter your address
+            </span>
+          </div>
+
+          <!-- Security Question -->
+          <div class="form-group">
+            <label for="securityQuestion" class="form-label form-label-required">Security Question</label>
+            <select 
+              id="securityQuestion" 
+              name="securityQuestion" 
+              class="form-select"
+              aria-required="true"
+              aria-describedby="securityQuestionError"
+              required
+            >
+              <option value="">Select a security question...</option>
+              <option value="pet">What was the name of your first pet?</option>
+              <option value="school">What elementary school did you attend?</option>
+              <option value="city">In what city were you born?</option>
+              <option value="mother">What is your mother's maiden name?</option>
+              <option value="car">What was the make of your first car?</option>
+            </select>
+            <span id="securityQuestionError" class="form-error hidden" role="alert">
+              ⚠️ Please select a security question
+            </span>
+          </div>
+
+          <!-- Security Answer -->
+          <div class="form-group">
+            <label for="securityAnswer" class="form-label form-label-required">Security Answer</label>
+            <input 
+              type="text" 
+              id="securityAnswer" 
+              name="securityAnswer" 
+              class="form-input" 
+              placeholder="Enter your answer"
+              aria-required="true"
+              aria-describedby="securityAnswerError"
+              required
+            >
+            <span class="form-help">This will be used to recover your account</span>
+            <span id="securityAnswerError" class="form-error hidden" role="alert">
+              ⚠️ Please enter an answer to your security question
+            </span>
+          </div>
+
+          <!-- Terms and Conditions -->
+          <div class="form-group">
+            <label class="form-checkbox">
+              <input 
+                type="checkbox" 
+                id="terms" 
+                name="terms" 
+                aria-required="true"
+                aria-describedby="termsError"
+                required
+              >
+              <span>I agree to the <a href="#" class="text-primary">Terms and Conditions</a> and <a href="#" class="text-primary">Privacy Policy</a></span>
+            </label>
+            <span id="termsError" class="form-error hidden" role="alert">
+              ⚠️ You must accept the terms and conditions
+            </span>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+              Create Account
+            </button>
+          </div>
+
+          <!-- Login Link -->
+          <div class="text-center mt-md">
+            <p class="text-light">
+              Already have an account? 
+              <a href="login.html" class="text-primary font-semibold">Sign in</a>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="successModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modalTitle" class="modal-title">Registration Successful!</h2>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-success">
+          <span style="font-size: 1.5rem;">✅</span>
+          <div>
+            <p class="font-semibold" style="margin-bottom: 0.5rem;">Account Created Successfully</p>
+            <p style="margin-bottom: 0;">An activation email has been sent to <strong id="registeredEmail"></strong>. Please check your inbox and click the activation link to complete your registration.</p>
+          </div>
+        </div>
+        <p class="text-light mt-lg">
+          <strong>Note:</strong> This is a wireframe demonstration. No actual email is sent.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="window.location.href='login.html'">
+          Go to Login
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container for notifications -->
+  <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="js/main.js"></script>
+  <script>
+    // Initialize registration page
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeRegistrationForm();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sign in to the State Lottery Commission Portal">
+  <title>Login - State Lottery Commission Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Skip to main content for accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Login Page -->
+  <div class="auth-page">
+    <div class="auth-card card">
+      <div class="card-header text-center">
+        <a href="index.html" style="display: inline-block; margin-bottom: 1rem; color: var(--text-light); text-decoration: none; font-size: 0.875rem;">← Back to Home</a>
+        <img src="assets/sba-logo.svg" alt="State Lottery Commission Logo" style="height: 60px; margin-bottom: 1rem;">
+        <h1 class="card-title">Welcome Back</h1>
+        <p class="card-subtitle">Sign in to access your State Lottery Commission portal</p>
+      </div>
+
+      <div class="card-body" id="main-content">
+        <!-- Login Form -->
+        <form id="loginForm" novalidate>
+          
+          <!-- Email Address -->
+          <div class="form-group">
+            <label for="email" class="form-label form-label-required">Email Address</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              class="form-input" 
+              placeholder="you@example.com"
+              aria-required="true"
+              aria-describedby="emailError"
+              required
+              autocomplete="email"
+            >
+            <span id="emailError" class="form-error hidden" role="alert"></span>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group">
+            <label for="password" class="form-label form-label-required">Password</label>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              class="form-input" 
+              placeholder="Enter your password"
+              aria-required="true"
+              aria-describedby="passwordError"
+              required
+              autocomplete="current-password"
+            >
+            <span id="passwordError" class="form-error hidden" role="alert"></span>
+          </div>
+
+          <!-- Remember Me & Forgot Password -->
+          <div class="form-group" style="display: flex; justify-content: space-between; align-items: center;">
+            <label class="form-checkbox" style="margin: 0;">
+              <input type="checkbox" id="rememberMe" name="rememberMe">
+              <span>Remember me</span>
+            </label>
+            <a href="#" class="text-primary font-semibold" id="forgotPasswordLink">Forgot password?</a>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+              Sign In
+            </button>
+          </div>
+
+          <!-- Registration Link -->
+          <div class="text-center mt-md">
+            <p class="text-light">
+              Don't have an account? 
+              <a href="registration.html" class="text-primary font-semibold">Create one now</a>
+            </p>
+          </div>
+
+          <!-- Divider -->
+          <div style="position: relative; text-align: center; margin: 2rem 0;">
+            <hr style="border: none; border-top: 1px solid var(--border);">
+            <span style="position: absolute; top: -0.6rem; left: 50%; transform: translateX(-50%); background: var(--surface); padding: 0 1rem; color: var(--text-light); font-size: 0.875rem;">
+              Quick Access
+            </span>
+          </div>
+
+          <!-- Quick Access Buttons -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <button type="button" class="btn btn-outline" onclick="loginAsRetailer()">
+              Login as Retailer
+            </button>
+            <button type="button" class="btn btn-outline" onclick="loginAsAgency()">
+              Login as Agency
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="successModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modalTitle" class="modal-title">Login Successful!</h2>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-success">
+          <span style="font-size: 1.5rem;">✅</span>
+          <div>
+            <p class="font-semibold" style="margin-bottom: 0.5rem;">Authentication Successful</p>
+            <p style="margin-bottom: 0;">You have successfully logged in. Redirecting to your dashboard...</p>
+          </div>
+        </div>
+        <p class="text-light mt-lg">
+          <strong>Note:</strong> This is a wireframe demonstration. No actual authentication is performed.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="modalContinueBtn">
+          Continue to Dashboard
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Forgot Password Modal -->
+  <div id="forgotPasswordModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="forgotPasswordTitle">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="forgotPasswordTitle" class="modal-title">Reset Password</h2>
+        <button type="button" class="modal-close" aria-label="Close" onclick="closeForgotPasswordModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <p class="text-light mb-lg">Enter your email address and we'll send you a link to reset your password.</p>
+        <form id="forgotPasswordForm">
+          <div class="form-group">
+            <label for="resetEmail" class="form-label form-label-required">Email Address</label>
+            <input 
+              type="email" 
+              id="resetEmail" 
+              name="resetEmail" 
+              class="form-input" 
+              placeholder="you@example.com"
+              required
+            >
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeForgotPasswordModal()">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-primary" onclick="submitForgotPassword()">
+          Send Reset Link
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="js/main.js"></script>
+  <script>
+    // Initialize login page
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeLoginForm();
+    });
+
+    // Quick access login functions
+    function loginAsRetailer() {
+      document.getElementById('email').value = 'retailer@example.com';
+      document.getElementById('password').value = 'password123';
+      showToast('Pre-filled retailer credentials', 'info');
+    }
+
+    function loginAsAgency() {
+      document.getElementById('email').value = 'agency@example.com';
+      document.getElementById('password').value = 'password123';
+      showToast('Pre-filled agency credentials', 'info');
+    }
+
+    // Forgot password handlers
+    document.getElementById('forgotPasswordLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('forgotPasswordModal').classList.add('active');
+    });
+
+    function closeForgotPasswordModal() {
+      document.getElementById('forgotPasswordModal').classList.remove('active');
+    }
+
+    function submitForgotPassword() {
+      const email = document.getElementById('resetEmail').value;
+      if (email && validateEmail(email)) {
+        showToast('Password reset link sent to ' + email, 'success');
+        closeForgotPasswordModal();
+        document.getElementById('forgotPasswordForm').reset();
+      } else {
+        showToast('Please enter a valid email address', 'error');
+      }
+    }
+
+    // Close modals on overlay click
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) {
+          overlay.classList.remove('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

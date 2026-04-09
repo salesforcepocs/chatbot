@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Settings - State Lottery Commission">
+  <title>Settings - State Lottery Commission Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+      background-color: #f3f4f6;
+    }
+
+    .page-wrapper {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background: linear-gradient(180deg, #0A1628 0%, #0f1f35 100%);
+      padding: 2rem 0;
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100vh;
+      width: 260px;
+      overflow-y: auto;
+      box-shadow: 2px 0 15px rgba(0, 0, 0, 0.15);
+      z-index: 100;
+    }
+
+    .sidebar-header {
+      padding: 1.5rem;
+      text-align: center;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      margin-bottom: 1.5rem;
+    }
+
+    .sidebar-logo {
+      height: 40px;
+      margin-bottom: 0.75rem;
+    }
+
+    .sidebar-title {
+      color: #FFFFFF;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .sidebar-nav {
+      padding: 0 0.75rem;
+    }
+
+    .sidebar-nav-section {
+      margin-bottom: 2rem;
+    }
+
+    .sidebar-nav-label {
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: rgba(212, 175, 55, 0.8);
+      letter-spacing: 0.5px;
+      margin-bottom: 0.5rem;
+    }
+
+    .sidebar-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.875rem 1rem;
+      color: rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      border-radius: 0.5rem;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+      text-decoration: none;
+    }
+
+    .sidebar-nav-item:hover {
+      background-color: rgba(212, 175, 55, 0.15);
+      color: #FFFFFF;
+      padding-left: 1.25rem;
+    }
+
+    .sidebar-nav-item.active {
+      background: linear-gradient(90deg, rgba(212, 175, 55, 0.3) 0%, transparent 100%);
+      color: #F4D03F;
+      border-right: 3px solid #D4AF37;
+      padding-right: calc(1rem - 3px);
+    }
+
+    .sidebar-icon {
+      font-size: 1.1rem;
+      width: 20px;
+      text-align: center;
+    }
+
+    .main-content {
+      margin-left: 260px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      width: calc(100% - 260px);
+    }
+
+    .top-nav {
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      flex-shrink: 0;
+    }
+
+    .page-content {
+      padding: 2rem;
+      flex: 1;
+      overflow-y: auto;
+      background-color: #f3f4f6;
+    }
+
+    .page-header {
+      margin-bottom: 2rem;
+    }
+
+    .page-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #0A1628;
+      margin-bottom: 0.5rem;
+    }
+
+    .page-subtitle {
+      color: #6b7280;
+      font-size: 1rem;
+    }
+
+    .settings-section {
+      background: white;
+      border-radius: 0.75rem;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .settings-section-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #0A1628;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #f3f4f6;
+    }
+
+    .setting-item {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+      align-items: center;
+    }
+
+    .setting-label {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .setting-name {
+      font-weight: 600;
+      color: #0A1628;
+    }
+
+    .setting-description {
+      font-size: 0.875rem;
+      color: #6b7280;
+    }
+
+    .setting-control input,
+    .setting-control select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .setting-control input:focus,
+    .setting-control select:focus {
+      outline: none;
+      border-color: #D4AF37;
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 50px;
+      height: 28px;
+      background-color: #d1d5db;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .toggle-switch.active {
+      background-color: #059669;
+    }
+
+    .toggle-switch-knob {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 24px;
+      height: 24px;
+      background: white;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .toggle-switch.active .toggle-switch-knob {
+      left: 24px;
+    }
+
+    .action-btn {
+      padding: 0.625rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      background: white;
+      color: #0A1628;
+      border: 1px solid #d1d5db;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    .action-btn:hover {
+      border-color: #D4AF37;
+      color: #D4AF37;
+    }
+
+    .action-btn.primary {
+      background: linear-gradient(135deg, #0A1628 0%, #1E3A5F 100%);
+      color: white;
+      border-color: #0A1628;
+    }
+
+    .action-btn.primary:hover {
+      background: linear-gradient(135deg, #0f1f35 0%, #2d4f7f 100%);
+      border-color: #D4AF37;
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+    }
+
+    .action-btn.danger {
+      background: #fee2e2;
+      color: #991b1b;
+      border-color: #fecaca;
+    }
+
+    .action-btn.danger:hover {
+      background: #fecaca;
+      color: #7c2d12;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: fixed;
+        left: -260px;
+        transition: left 0.3s ease;
+        z-index: 200;
+      }
+
+      .main-content {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .setting-item {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="assets/sba-logo.svg" alt="Logo" class="sidebar-logo">
+        <div class="sidebar-title">Agency Portal</div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="sidebar-nav-section">
+          <div class="sidebar-nav-label">Dashboard</div>
+          <a href="backoffice_application.html" class="sidebar-nav-item">
+            <span class="sidebar-icon">📊</span>
+            <span>Overview</span>
+          </a>
+        </div>
+
+        <div class="sidebar-nav-section">
+          <div class="sidebar-nav-label">Management</div>
+          <a href="team.html" class="sidebar-nav-item">
+            <span class="sidebar-icon">👥</span>
+            <span>Team</span>
+          </a>
+          <a href="documents.html" class="sidebar-nav-item">
+            <span class="sidebar-icon">📄</span>
+            <span>Documents</span>
+          </a>
+          <a href="settings.html" class="sidebar-nav-item active">
+            <span class="sidebar-icon">⚙️</span>
+            <span>Settings</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Top Navigation -->
+      <nav class="top-nav">
+        <div>
+          <h3 style="color: #0A1628; font-weight: 600;">Settings</h3>
+        </div>
+        <div style="display: flex; gap: 1rem; align-items: center;" id="user-profile-container">
+          <div style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer; padding: 0.5rem 1rem; border-radius: 0.5rem; position: relative;" class="user-profile">
+            <div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%); display: flex; align-items: center; justify-content: center; color: #0A1628; font-weight: 700; font-size: 0.9rem;">JD</div>
+            <div>
+              <div style="font-weight: 600; color: #1f2937; font-size: 0.9rem;">John Doe</div>
+              <div style="font-size: 0.75rem; color: #9ca3af;">Agency Admin</div>
+            </div>
+            <!-- Dropdown Menu -->
+            <div class="user-dropdown" style="display: none; position: absolute; top: 100%; right: 0; background: white; border-radius: 0.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); min-width: 200px; z-index: 1000; margin-top: 0.5rem;">
+              <a href="settings.html" style="display: block; padding: 0.75rem 1rem; color: #1f2937; text-decoration: none; border-bottom: 1px solid #e5e7eb; font-size: 0.875rem;">Settings</a>
+              <a href="#" class="signout-btn" style="display: block; padding: 0.75rem 1rem; color: #ef4444; text-decoration: none; font-size: 0.875rem; font-weight: 600;">Sign Out</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Page Content -->
+      <div class="page-content">
+        <div class="page-header">
+          <h1 class="page-title">Settings</h1>
+          <p class="page-subtitle">Manage your account and organization preferences</p>
+        </div>
+
+        <!-- Account Settings -->
+        <div class="settings-section">
+          <div class="settings-section-title">Account Settings</div>
+          <div class="setting-item">
+            <div class="setting-label">
+              <span class="setting-name">Full Name</span>
+              <span class="setting-description">Your name as it appears in the system</span>
+            </div>
+            <div class="setting-control">
+              <input type="text" value="John Doe">
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">
+              <span class="setting-name">Email Address</span>
+              <span class="setting-description">Your primary contact email</span>
+            </div>
+            <div class="setting-control">
+              <input type="email" value="john.doe@lottery.gov">
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">
+              <span class="setting-name">Phone Number</span>
+              <span class="setting-description">Your contact phone number</span>
+            </div>
+            <div class="setting-control">
+              <input type="tel" value="(555) 123-4567">
+            </div>
+          </div>
+          <div class="button-group">
+            <button class="action-btn primary">Save Changes</button>
+            <button class="action-btn">Cancel</button>
+          </div>
+        </div>
+
+        <!-- Security Settings -->
+        <div class="settings-section">
+          <div class="settings-section-title">Security & Privacy</div>
+          <div class="setting-item">
+            <div class="setting-label">
+              <span class="setting-name">Change Password</span>
+              <span class="setting-description">Update your account password</span>
+            </div>
+            <div>
+              <button class="action-btn">Change Password</button>
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">
+              <span class="setting-name">Two-Factor Authentication</span>
+              <span class="setting-description">Add an extra layer of security</span>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+              <div class="toggle-switch" onclick="this.classList.toggle('active')">
+                <div class="toggle-switch-knob"></div>
+              </div>
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">
+              <span class="setting-name">Session Timeout</span>
+              <span class="setting-description">Auto-logout after inactivity</span>
+            </div>
+            <div class="setting-control">
+              <select>
+                <option>30 minutes</option>
+                <option>1 hour</option>
+                <option>2 hours</option>
+                <option>Never</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notification Settings -->
+        <div class="settings-section">
+          <div class="settings-section-title">Notifications</div>
+          <div class="setting-item">
+            <div class="setting-label">
+              <span class="setting-name">Email Notifications</span>
+              <span class="setting-description">Receive updates via email</span>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+              <div class="toggle-switch active" onclick="this.classList.toggle('active')">
+                <div class="toggle-switch-knob"></div>
+              </div>
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">
+              <span class="setting-name">Case Updates</span>
+              <span class="setting-description">Get notified when cases are updated</span>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+              <div class="toggle-switch active" onclick="this.classList.toggle('active')">
+                <div class="toggle-switch-knob"></div>
+              </div>
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">
+              <span class="setting-name">Weekly Report</span>
+              <span class="setting-description">Receive weekly summary reports</span>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+              <div class="toggle-switch" onclick="this.classList.toggle('active')">
+                <div class="toggle-switch-knob"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Organization Settings -->
+        <div class="settings-section">
+          <div class="settings-section-title">Organization</div>
+          <div class="setting-item">
+            <div class="setting-label">
+              <span class="setting-name">Organization Name</span>
+              <span class="setting-description">Your agency name</span>
+            </div>
+            <div class="setting-control">
+              <input type="text" value="State Lottery Commission - Agency Division">
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">
+              <span class="setting-name">Time Zone</span>
+              <span class="setting-description">Your preferred time zone</span>
+            </div>
+            <div class="setting-control">
+              <select>
+                <option>Eastern Time (ET)</option>
+                <option>Central Time (CT)</option>
+                <option>Mountain Time (MT)</option>
+                <option>Pacific Time (PT)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="settings-section" style="border-color: #fecaca; background: rgba(254, 226, 226, 0.5);">
+          <div class="settings-section-title" style="color: #991b1b;">Danger Zone</div>
+          <div class="setting-item">
+            <div class="setting-label">
+              <span class="setting-name">Delete Account</span>
+              <span class="setting-description">Permanently delete your account and all data</span>
+            </div>
+            <div>
+              <button class="action-btn danger">Delete Account</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Add event listeners to sidebar items
+    document.querySelectorAll('.sidebar-nav-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        const href = item.getAttribute('href');
+        if (href && href !== '#') {
+          // Allow default navigation for external links
+          return;
+        }
+        e.preventDefault();
+        document.querySelectorAll('.sidebar-nav-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+      });
+    });
+
+    // Save changes button
+    document.querySelectorAll('.action-btn.primary').forEach(btn => {
+      if (btn.textContent.includes('Save')) {
+        btn.addEventListener('click', () => {
+          alert('Settings saved successfully!');
+        });
+      }
+    });
+
+    // User profile dropdown
+    const userProfile = document.querySelector('.user-profile');
+    const userDropdown = document.querySelector('.user-dropdown');
+    
+    if (userProfile && userDropdown) {
+      userProfile.addEventListener('click', () => {
+        userDropdown.style.display = userDropdown.style.display === 'none' ? 'block' : 'none';
+      });
+      
+      // Close dropdown when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!userProfile.contains(e.target)) {
+          userDropdown.style.display = 'none';
+        }
+      });
+    }
+    
+    // Sign out button
+    const signoutBtn = document.querySelector('.signout-btn');
+    if (signoutBtn) {
+      signoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        alert('Signing out...');
+        window.location.href = 'index.html';
+      });
+    }
+    </script>
+    <script src="js/chatbot.js"></script>
+  </body>
+</html>
