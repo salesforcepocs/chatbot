@@ -1,0 +1,30 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="certGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8941F;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Certificate -->
+  <rect x="14" y="12" width="36" height="30" rx="3" fill="url(#certGrad)" opacity="0.15"/>
+  <rect x="14" y="12" width="36" height="30" rx="3" fill="none" stroke="url(#certGrad)" stroke-width="2.5"/>
+  
+  <!-- Seal -->
+  <circle cx="32" cy="27" r="8" fill="url(#certGrad)" opacity="0.2"/>
+  <circle cx="32" cy="27" r="8" fill="none" stroke="url(#certGrad)" stroke-width="2"/>
+  
+  <!-- Star in Seal -->
+  <path d="M 32 22 L 33.5 25.5 L 37 26 L 34.5 28.5 L 35 32 L 32 30 L 29 32 L 29.5 28.5 L 27 26 L 30.5 25.5 Z" fill="url(#certGrad)"/>
+  
+  <!-- Ribbons -->
+  <path d="M 28 35 L 26 52 L 28 50 L 30 52 Z" fill="url(#certGrad)" opacity="0.3"/>
+  <path d="M 28 35 L 26 52 L 28 50 L 30 52 Z" fill="none" stroke="url(#certGrad)" stroke-width="2" stroke-linejoin="round"/>
+  
+  <path d="M 36 35 L 34 52 L 36 50 L 38 52 Z" fill="url(#certGrad)" opacity="0.3"/>
+  <path d="M 36 35 L 34 52 L 36 50 L 38 52 Z" fill="none" stroke="url(#certGrad)" stroke-width="2" stroke-linejoin="round"/>
+  
+  <!-- Text Lines -->
+  <line x1="20" y1="18" x2="44" y2="18" stroke="url(#certGrad)" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="24" y1="22" x2="40" y2="22" stroke="url(#certGrad)" stroke-width="1.5" stroke-linecap="round"/>
+</svg>
