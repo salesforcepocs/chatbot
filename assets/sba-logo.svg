@@ -1,0 +1,44 @@
+<!-- State Lottery Commission Premium Logo -->
+<svg width="240" height="80" viewBox="0 0 240 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0A1628;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#050B14;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F4D03F;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8941F;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="240" height="80" rx="10" fill="url(#bgGradient)"/>
+  
+  <!-- Lottery Ticket Icon -->
+  <g transform="translate(15, 20)">
+    <!-- Ticket shape -->
+    <rect x="0" y="0" width="35" height="40" rx="4" fill="url(#goldGradient)" opacity="0.95"/>
+    <rect x="3" y="3" width="29" height="34" rx="2" fill="#0A1628" opacity="0.4"/>
+    
+    <!-- Lucky numbers -->
+    <circle cx="10" cy="12" r="3" fill="#FFFFFF" opacity="0.9"/>
+    <circle cx="17.5" cy="12" r="3" fill="#FFFFFF" opacity="0.9"/>
+    <circle cx="25" cy="12" r="3" fill="#FFFFFF" opacity="0.9"/>
+    
+    <!-- Stars -->
+    <path d="M 17.5 25 L 19 29 L 23 29 L 19.5 31.5 L 21 35.5 L 17.5 33 L 14 35.5 L 15.5 31.5 L 12 29 L 16 29 Z" fill="#FFFFFF" opacity="0.8"/>
+  </g>
+  
+  <!-- Main text: STATE LOTTERY -->
+  <text x="60" y="35" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="800" fill="url(#goldGradient)" letter-spacing="1">STATE LOTTERY</text>
+  
+  <!-- Subtitle: COMMISSION -->
+  <text x="60" y="55" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" letter-spacing="2" opacity="0.95">COMMISSION</text>
+  
+  <!-- Decorative elements -->
+  <circle cx="225" cy="15" r="2" fill="#F59E0B" opacity="0.6"/>
+  <circle cx="230" cy="22" r="1.5" fill="#FCD34D" opacity="0.5"/>
+  <circle cx="220" cy="25" r="1" fill="#FFFFFF" opacity="0.4"/>
+</svg>
